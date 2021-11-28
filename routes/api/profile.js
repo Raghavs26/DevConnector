@@ -21,8 +21,8 @@ router.get("/me", auth, async (req, res) => {
       return res.status(400).json({ msg: "There is no profile for this user" });
     }
     res.json(profile);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    console.error(error.message);
     res.status(500).send("Server Error");
   }
 });
@@ -58,7 +58,7 @@ router.post(
       facebook,
       twitter,
       instagram,
-      linkdin,
+      linkedin,
     } = req.body;
 
     // profile object
@@ -80,7 +80,7 @@ router.post(
     if (youtube) profileFields.social.youtube = youtube;
     if (twitter) profileFields.social.twitter = twitter;
     if (facebook) profileFields.social.facebook = facebook;
-    if (linkdin) profileFields.social.linkdin = linkdin;
+    if (linkedin) profileFields.social.linkedin = linkedin;
     if (instagram) profileFields.social.instagram = instagram;
 
     try {
@@ -97,11 +97,102 @@ router.post(
 
       //to create
       profile = new Profile(profileFields);
-
       await profile.save();
       res.json(profile);
-    } catch (err) {
-      console.error(err.message);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route  GET api/profile
+// @desc   create or update user profile
+// @access Private
+
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    res.json(profiles);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  GET api/profile/user/:user_id
+// @desc   Get profile by user id
+// @access Public
+
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+
+    if (!profile) {
+      res.status(400).json({ msg: "Profile not found" });
+    }
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    if (error.kind == "ObjectId") {
+      res.status(400).json({ msg: "Profile not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  DELETE api/profile
+// @desc  Delete Profile, user & post
+// @access Private
+
+router.delete("/", auth, async (req, res) => {
+  try {
+    //Remove Profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    //Remove user
+    await User.findOneAndRemove({ _id: req.user.id });
+
+    res.json({ msg: "User removed" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  PUT api/profile/experience
+// @desc  Add Profile experience
+// @access Private
+
+router.put(
+  "/experience",
+  [
+    auth,
+    check("title", "Title is required").not().isEmpty(),
+    check("company", "Company is required").not().isEmpty(),
+    check("from", "From date is required").not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, company, location, from, to, current, description } =
+      req.body;
+
+    const newExp = { title, company, location, from, to, current, description };
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.experience.unshift(newExp);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (error) {
+      console.error(error.message);
       res.status(500).send("Server Error");
     }
   }
