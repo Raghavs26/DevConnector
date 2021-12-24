@@ -31,7 +31,6 @@ export const createProfile =
           "Content-Type": "application/json",
         },
       };
-
       const res = await axios.post("/api/profile", formData);
       dispatch({
         type: GET_PROFILE,
