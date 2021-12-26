@@ -26,6 +26,7 @@ export const createProfile =
   (formData, history, edit = false) =>
   async (dispatch) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -64,6 +65,7 @@ export const createProfile =
 //Add experience
 export const addExperience = (formData, history) => async (dispatch) => {
   try {
+    // eslint-disable-next-line no-unused-vars
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -97,6 +99,7 @@ export const addExperience = (formData, history) => async (dispatch) => {
 //Add education
 export const addEducation = (formData, history) => async (dispatch) => {
   try {
+    // eslint-disable-next-line no-unused-vars
     const config = {
       headers: {
         "Content-Type": "application/json",
