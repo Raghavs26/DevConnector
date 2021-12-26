@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect } from "react-redux"; // {connect}
+import { Link, withRouter } from "react-router-dom";
 import { createProfile, getCurrentProfile } from "../../actions/profile";
 
 const EditProfile = ({
@@ -35,18 +35,18 @@ const EditProfile = ({
       website: loading || !profile.website ? "" : profile.website,
       location: loading || !profile.location ? "" : profile.location,
       status: loading || !profile.status ? "" : profile.status,
-      skills: loading || !profile.skills ? "" : profile.skills.join(","),
+      skills: loading || !profile.skills ? "" : profile.skills,
       githubusername:
         loading || !profile.githubusername ? "" : profile.githubusername,
       bio: loading || !profile.bio ? "" : profile.bio,
-      twitter: loading || !profile.social ? "" : profile.social.twitter,
-      facebook: loading || !profile.social ? "" : profile.social.facebook,
-      linkedin: loading || !profile.social ? "" : profile.social.linkedin,
-      youtube: loading || !profile.social ? "" : profile.social.youtube,
-      instagram: loading || !profile.social ? "" : profile.social.instagram,
+      twitter: loading || !profile.twitter ? "" : profile.twitter,
+      facebook: loading || !profile.facebook ? "" : profile.facebook,
+      linkedin: loading || !profile.linkedin ? "" : profile.linkedin,
+      youtube: loading || !profile.youtube ? "" : profile.youtube,
+      instagram: loading || !profile.instagram ? "" : profile.instagram,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, getCurrentProfile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getCurrentProfile, loading]);
 
   const {
     company,
@@ -75,7 +75,7 @@ const EditProfile = ({
     <Fragment>
       <h1 className="large text-primary">Create Your Profile</h1>
       <p className="lead">
-        <i className="fas fa-user" /> Let's get some information to make your
+        <i className="fas fa-user"></i> Let's get some information to make your
         profile stand out
       </p>
       <small>* = required field</small>
@@ -141,7 +141,7 @@ const EditProfile = ({
             onChange={(e) => onChange(e)}
           />
           <small className="form-text">
-            Please use comma separated values (eg. HTML,CSS,JavaScript,PHP)
+            Please use comma separated values (eg.HTML,CSS,JavaScript,PHP)
           </small>
         </div>
         <div className="form-group">
@@ -163,7 +163,7 @@ const EditProfile = ({
             name="bio"
             value={bio}
             onChange={(e) => onChange(e)}
-          />
+          ></textarea>
           <small className="form-text">Tell us a little about yourself</small>
         </div>
 
@@ -181,7 +181,7 @@ const EditProfile = ({
         {displaySocialInputs && (
           <Fragment>
             <div className="form-group social-input">
-              <i className="fab fa-twitter fa-2x" />
+              <i className="fab fa-twitter fa-2x"></i>
               <input
                 type="text"
                 placeholder="Twitter URL"
@@ -192,7 +192,7 @@ const EditProfile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-facebook fa-2x" />
+              <i className="fab fa-facebook fa-2x"></i>
               <input
                 type="text"
                 placeholder="Facebook URL"
@@ -203,7 +203,7 @@ const EditProfile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-youtube fa-2x" />
+              <i className="fab fa-youtube fa-2x"></i>
               <input
                 type="text"
                 placeholder="YouTube URL"
@@ -214,7 +214,7 @@ const EditProfile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-linkedin fa-2x" />
+              <i className="fab fa-linkedin fa-2x"></i>
               <input
                 type="text"
                 placeholder="Linkedin URL"
@@ -225,7 +225,7 @@ const EditProfile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-instagram fa-2x" />
+              <i className="fab fa-instagram fa-2x"></i>
               <input
                 type="text"
                 placeholder="Instagram URL"

@@ -20,16 +20,14 @@ const AddExperience = ({ addExperience, history }) => {
 
   const { company, title, location, from, to, current, description } = formData;
 
-  const onChange = (evt) => {
-    const { name, value } = evt.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
     <Fragment>
       <h1 className="large text-primary">Add An Experience</h1>
       <p className="lead">
-        <i className="fas fa-code-branch"></i> Add any developer/programming
+        <i className="fas fa-code-branch" /> Add any developer/programming
         positions that you have had in the past
       </p>
       <small>* = required field</small>
@@ -37,6 +35,7 @@ const AddExperience = ({ addExperience, history }) => {
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
+          console.log("FormData: " + formData.title);
           addExperience(formData, history);
         }}
       >
@@ -85,7 +84,7 @@ const AddExperience = ({ addExperience, history }) => {
               name="current"
               checked={current}
               value={current}
-              onChange={() => {
+              onChange={(e) => {
                 setFormData({ ...formData, current: !current });
                 toggleDisabled(!toDateDisabled);
               }}
@@ -114,7 +113,7 @@ const AddExperience = ({ addExperience, history }) => {
           ></textarea>
         </div>
         <input type="submit" className="btn btn-primary my-1" />
-        <Link to="/dashboard" className="btn btn-light my-1">
+        <Link className="btn btn-light my-1" to="/dashboard">
           Go Back
         </Link>
       </form>

@@ -1,15 +1,10 @@
-import React, { useEffect, useState, Fragment } from "react";
-import { Link, withRouter, Redirect } from "react-router-dom";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { createProfile, getCurrentProfile } from "../../actions/profile";
+import { connect } from "react-redux"; // {connect}
+import { Link, withRouter } from "react-router-dom";
+import { createProfile } from "../../actions/profile";
 
-const Createprofile = ({
-  createProfile,
-  getCurrentProfile,
-  profile: { profile, loading },
-  history,
-}) => {
+const CreateProfile = ({ createProfile, history }) => {
   const [formData, setFormData] = useState({
     company: "",
     website: "",
@@ -24,7 +19,9 @@ const Createprofile = ({
     youtube: "",
     instagram: "",
   });
+
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
+
   const {
     company,
     website,
@@ -39,21 +36,21 @@ const Createprofile = ({
     youtube,
     instagram,
   } = formData;
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("onsubmit");
     createProfile(formData, history);
   };
-  useEffect(() => {
-    getCurrentProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getCurrentProfile]);
-  return loading && profile === null ? (
+
+  return (
     <Fragment>
       <h1 className="large text-primary">Create Your Profile</h1>
       <p className="lead">
-        <i className="fas fa-user" /> Let's get some information to make your
+        <i className="fas fa-user"></i> Let's get some information to make your
         profile stand out
       </p>
       <small>* = required field</small>
@@ -119,7 +116,7 @@ const Createprofile = ({
             onChange={(e) => onChange(e)}
           />
           <small className="form-text">
-            Please use comma separated values (eg. HTML,CSS,JavaScript,PHP)
+            Please use comma separated values (eg.HTML,CSS,JavaScript,PHP)
           </small>
         </div>
         <div className="form-group">
@@ -141,7 +138,7 @@ const Createprofile = ({
             name="bio"
             value={bio}
             onChange={(e) => onChange(e)}
-          />
+          ></textarea>
           <small className="form-text">Tell us a little about yourself</small>
         </div>
 
@@ -155,10 +152,11 @@ const Createprofile = ({
           </button>
           <span>Optional</span>
         </div>
+
         {displaySocialInputs && (
           <Fragment>
             <div className="form-group social-input">
-              <i className="fab fa-twitter fa-2x" />
+              <i className="fab fa-twitter fa-2x"></i>
               <input
                 type="text"
                 placeholder="Twitter URL"
@@ -169,7 +167,7 @@ const Createprofile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-facebook fa-2x" />
+              <i className="fab fa-facebook fa-2x"></i>
               <input
                 type="text"
                 placeholder="Facebook URL"
@@ -180,7 +178,7 @@ const Createprofile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-youtube fa-2x" />
+              <i className="fab fa-youtube fa-2x"></i>
               <input
                 type="text"
                 placeholder="YouTube URL"
@@ -191,7 +189,7 @@ const Createprofile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-linkedin fa-2x" />
+              <i className="fab fa-linkedin fa-2x"></i>
               <input
                 type="text"
                 placeholder="Linkedin URL"
@@ -202,7 +200,7 @@ const Createprofile = ({
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-instagram fa-2x" />
+              <i className="fab fa-instagram fa-2x"></i>
               <input
                 type="text"
                 placeholder="Instagram URL"
@@ -220,19 +218,11 @@ const Createprofile = ({
         </Link>
       </form>
     </Fragment>
-  ) : (
-    <Redirect to="/dashboard" />
   );
 };
 
-Createprofile.propTypes = {
+CreateProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
 };
-const mapStateToProps = (state) => ({
-  profile: state.profile,
-});
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-  withRouter(Createprofile)
-);
+
+export default connect(null, { createProfile })(withRouter(CreateProfile));
